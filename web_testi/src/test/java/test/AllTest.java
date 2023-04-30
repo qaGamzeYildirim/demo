@@ -8,6 +8,8 @@ import page.CareersPage;
 import page.HomePage;
 import page.QualityAssurancePage;
 
+import java.io.IOException;
+
 public class AllTest extends BaseTest {
 
     HomePage homePage;
@@ -15,25 +17,21 @@ public class AllTest extends BaseTest {
     QualityAssurancePage qualityAssurancePage;
 
     @Before
-    public void before(){
-        homePage = new HomePage(chrome);
-        careersPage = new CareersPage(chrome);
-        qualityAssurancePage = new QualityAssurancePage(chrome);
-
-        //careersPage = new CareersPage(firefox);
-        //homePage = new HomePage(firefox);
-
+    public void before() {
+        homePage = new HomePage(driver);
+        careersPage = new CareersPage(driver);
+        qualityAssurancePage = new QualityAssurancePage(driver);
     }
 
     @Test
-    public void test() throws InterruptedException {
-        homePage.homePageControl();
-        careersPage.clickMore().clickCareers().careersPageControl().careerPageTeamsBlockControl().careerPageLocationBlockControl().careerPageLifeAtInsiderBlockControl();
-        qualityAssurancePage.clickSeeAllTeamsButton().clickQualityAssurance().clickSeeAllQAJobs().filterByLocations().controlDepartments().jobListControl().jobClick();
+    public void test() throws InterruptedException, IOException {
+        homePage.homePageActions();
+        careersPage.careersPageActions();
+        qualityAssurancePage.qualityAssurancePageActions();
     }
 
     @After
-    public void after(){
-        chrome.quit();
+    public void after() {
+        driver.quit();
     }
 }

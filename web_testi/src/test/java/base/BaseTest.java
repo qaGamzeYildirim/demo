@@ -8,30 +8,41 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class BaseTest {
-    protected WebDriver chrome;
-    protected WebDriver firefox;
+    protected WebDriver driver;
+
 
     @Before
     public void setup() {
-
-        //  WebDriverManager.firefoxdriver().setup();
-        WebDriverManager.chromedriver().setup();
-        chrome = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
+        String selectBrowser = "chrome";
         int timeout = 30;
         String url = "https://www.useinsider.com/";
+        if ("chrome".equalsIgnoreCase(selectBrowser)) {
 
-        chrome.manage().timeouts().implicitlyWait(timeout, SECONDS);
-        // firefox.manage().timeouts().implicitlyWait(timeout, SECONDS);
+            WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+            driver.manage().timeouts().implicitlyWait(timeout, SECONDS);
+            driver.get(url);
 
-        chrome.get(url);
-        // firefox.get(url);
-        //firefox = new FirefoxDriver();
+
+        } else if ("firefox".equalsIgnoreCase(selectBrowser)) {
+            WebDriverManager.firefoxdriver().setup();
+            driver = new FirefoxDriver();
+            driver.manage().timeouts().implicitlyWait(timeout, SECONDS);
+            driver.get(url);
+
+
+        }
     }
 
 

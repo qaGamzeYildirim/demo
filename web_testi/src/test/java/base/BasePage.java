@@ -1,16 +1,16 @@
 package base;
 
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -22,7 +22,6 @@ public class BasePage {
     JavascriptExecutor js = (JavascriptExecutor) driver;
     String strng = null;
     List<WebElement> elements;
-
 
 
     public BasePage(WebDriver driver) {
@@ -74,7 +73,6 @@ public class BasePage {
             containsString(elements.get(i), strng);
         }
 
-
     }
 
     public void webElementListEqualString(By by, String strng) {
@@ -83,7 +81,6 @@ public class BasePage {
         for (int i = 0; i < RowCount; i++) {
             assert0(elements.get(i), strng);
         }
-
 
     }
 
@@ -131,10 +128,22 @@ public class BasePage {
         int randomNum = ThreadLocalRandom.current().nextInt(0, RowCount);
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", elements.get(randomNum));
-        }
-
-       
-
     }
+
+    public void focusLastTab() {
+        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabs.size() - 1));
+    }
+
+    public void screenShot() throws IOException {
+
+        TakesScreenshot scrShot = ((TakesScreenshot) driver);
+        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+
+        File destFile = new File("src/test/ss/testHta.png");
+        FileUtils.copyFile(srcFile, destFile);
+    }
+
+}
 
 
